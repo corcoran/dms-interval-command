@@ -20,12 +20,9 @@ PluginComponent {
     property string outputText: command === "" ? "Configure me" : "..."
     property string popoutText: ""
 
-    // Click handler — popout or silent command
-    pillClickAction: (x, y, width, section, screen) => {
-        if (clickCommand === "") return;
-        if (popoutEnabled) {
-            popoutTimer.running = !popoutTimer.running;
-        } else {
+    // Click handler — only used when popout is disabled
+    pillClickAction: popoutEnabled ? null : (x, y, width, section, screen) => {
+        if (clickCommand !== "") {
             clickProcess.command = ["sh", "-c", root.clickCommand];
             clickProcess.running = true;
         }
@@ -67,15 +64,14 @@ PluginComponent {
     // Process to run the click command and capture full output for popout
     Process {
         id: popoutProcess
-        command: ["sh", "-c", root.clickCommand + "; echo"]
+        command: ["sh", "-c", root.clickCommand + " | sed 's/\\x1b\\[[0-9;]*m//g'; echo"]
         running: false
 
         stdout: SplitParser {
             property string buffer: ""
             onRead: data => {
-                let line = data.trim();
-                if (line !== "") {
-                    buffer = buffer === "" ? line : buffer + "\n" + line;
+                if (data.trim() !== "") {
+                    buffer = buffer === "" ? data : buffer + "\n" + data;
                 }
             }
         }
@@ -156,27 +152,30 @@ PluginComponent {
         }
     }
 
-    popoutWidth: 400
-    popoutHeight: 300
+    popoutWidth: pluginData.popoutWidth || 600
+    popoutHeight: pluginData.popoutHeight || 450
 
     popoutContent: Component {
         PopoutComponent {
             id: popout
-            headerText: root.iconName
             detailsText: root.clickCommand
             showCloseButton: true
 
-            StyledText {
+            Component.onCompleted: {
+                popoutTimer.running = true;
+            }
+
+            Component.onDestruction: {
+                popoutTimer.running = false;
+            }
+
+            Text {
                 width: parent.width
                 text: root.popoutText || "Running..."
                 font.pixelSize: Theme.fontSizeSmall
                 font.family: "monospace"
                 color: Theme.surfaceText
                 wrapMode: Text.WordWrap
-            }
-
-            function closePopout() {
-                popoutTimer.running = false;
             }
         }
     }

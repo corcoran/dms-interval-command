@@ -30,6 +30,10 @@ ln -sf ~/path/to/dank-interval-text ~/.config/DankMaterialShell/plugins/Interval
 | **Click Command** | Command to run when widget is clicked | *(empty)* |
 | **Popout Enabled** | Show click command output in a popout panel | `false` |
 | **Popout Refresh Interval** | Seconds between popout refreshes (1–300) | `5` |
+| **Popout Width** | Width of the popout panel in pixels (200–1920) | `600` |
+| **Popout Max Height** | Maximum height of the popout panel in pixels (100–1080) | `450` |
+
+Popout settings are hidden until **Popout Enabled** is checked. ANSI color codes are automatically stripped from popout output.
 
 ## Examples
 

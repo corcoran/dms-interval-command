@@ -56,6 +56,7 @@ PluginSettings {
     }
 
     ToggleSetting {
+        id: popoutToggle
         settingKey: "popoutEnabled"
         label: "Show Click Output in Popout"
         description: "When enabled, clicking the widget opens a panel showing the full click command output instead of running it silently"
@@ -63,6 +64,7 @@ PluginSettings {
     }
 
     SliderSetting {
+        visible: popoutToggle.value
         settingKey: "popoutRefreshInterval"
         label: "Popout Refresh Interval"
         description: "How often to refresh the click command output in the popout (in seconds)"
@@ -71,5 +73,29 @@ PluginSettings {
         maximum: 300
         unit: "s"
         leftIcon: "refresh"
+    }
+
+    SliderSetting {
+        visible: popoutToggle.value
+        settingKey: "popoutWidth"
+        label: "Popout Width"
+        description: "Width of the popout panel in pixels"
+        defaultValue: 600
+        minimum: 200
+        maximum: 1920
+        unit: "px"
+        leftIcon: "width"
+    }
+
+    SliderSetting {
+        visible: popoutToggle.value
+        settingKey: "popoutHeight"
+        label: "Popout Max Height"
+        description: "Maximum height of the popout panel in pixels"
+        defaultValue: 450
+        minimum: 100
+        maximum: 1080
+        unit: "px"
+        leftIcon: "height"
     }
 }
