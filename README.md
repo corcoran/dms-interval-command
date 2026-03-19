@@ -22,6 +22,8 @@ ln -sf ~/path/to/dms-interval-text ~/.config/DankMaterialShell/plugins/IntervalT
 
 ## Settings
 
+![Settings](screenshots/settings.jpg)
+
 | Setting | Description | Default |
 |---------|-------------|---------|
 | **Command** | Shell command to run | *(empty — shows "Configure me")* |
@@ -54,6 +56,8 @@ Bar display shows the first line of command output, truncated to 30 characters. 
 - Refresh Interval: `300`
 
 **Uptime records popout:**
+
+![Click command popout](screenshots/onclick.jpg)
 
 - Command: `~/.config/DankMaterialShell/plugins/IntervalText/uptime-compact.sh`
 - Icon: `schedule`
