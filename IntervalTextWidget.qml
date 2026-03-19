@@ -17,8 +17,18 @@ PluginComponent {
     property int popoutRefreshInterval: (pluginData.popoutRefreshInterval || 5) * 1000
 
     // State
-    property string outputText: command === "" ? "Configure me" : "..."
+    property string outputText: command === "" ? "No command set" : "..."
     property string popoutText: ""
+
+    onCommandChanged: {
+        if (command === "") {
+            outputText = "No command set";
+        } else {
+            outputText = "...";
+            commandProcess.stdout.captured = false;
+            commandProcess.running = true;
+        }
+    }
 
     // Click handler — only used when popout is disabled
     pillClickAction: popoutEnabled ? null : (x, y, width, section, screen) => {
@@ -77,7 +87,8 @@ PluginComponent {
 
         onRunningChanged: {
             if (!running) {
-                root.popoutText = popoutProcess.stdout.buffer || "No output";
+                let text = popoutProcess.stdout.buffer.replace(/\n+$/, "");
+                root.popoutText = text || "No output";
             }
         }
     }
@@ -157,8 +168,6 @@ PluginComponent {
     popoutContent: Component {
         PopoutComponent {
             id: popout
-            detailsText: root.clickCommand
-            showCloseButton: true
 
             Component.onCompleted: {
                 popoutTimer.running = true;
