@@ -28,6 +28,8 @@ ln -sf ~/path/to/dank-interval-text ~/.config/DankMaterialShell/plugins/Interval
 | **Icon** | Material Design icon name | `info` |
 | **Refresh Interval** | Seconds between runs (1–300) | `10` |
 | **Click Command** | Command to run when widget is clicked | *(empty)* |
+| **Popout Enabled** | Show click command output in a popout panel | `false` |
+| **Popout Refresh Interval** | Seconds between popout refreshes (1–300) | `5` |
 
 ## Examples
 
@@ -46,6 +48,14 @@ ln -sf ~/path/to/dank-interval-text ~/.config/DankMaterialShell/plugins/Interval
 - Command: `hostname`
 - Icon: `computer`
 - Refresh Interval: `300`
+
+**Uptime records popout:**
+
+- Command: `~/.config/DankMaterialShell/plugins/IntervalText/uptime-compact.sh`
+- Icon: `schedule`
+- Click Command: `uprecords -s`
+- Popout Enabled: checked
+- Popout Refresh Interval: `60`
 
 ## uptime-compact.sh
 
