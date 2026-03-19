@@ -54,4 +54,22 @@ PluginSettings {
         description: "Optional command to run when the widget is clicked (e.g. notify-send 'hello')"
         defaultValue: ""
     }
+
+    ToggleSetting {
+        settingKey: "popoutEnabled"
+        label: "Show Click Output in Popout"
+        description: "When enabled, clicking the widget opens a panel showing the full click command output instead of running it silently"
+        defaultValue: false
+    }
+
+    SliderSetting {
+        settingKey: "popoutRefreshInterval"
+        label: "Popout Refresh Interval"
+        description: "How often to refresh the click command output in the popout (in seconds)"
+        defaultValue: 5
+        minimum: 1
+        maximum: 300
+        unit: "s"
+        leftIcon: "refresh"
+    }
 }
