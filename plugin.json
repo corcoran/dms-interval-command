@@ -1,5 +1,5 @@
 {
-  "id": "intervalCommandPlugin",
+  "id": "intervalCommand",
   "name": "Interval Command",
   "description": "Run commands at configurable intervals and display their output",
   "version": "0.1.0",

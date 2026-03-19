@@ -5,7 +5,7 @@ import qs.Modules.Plugins
 
 PluginSettings {
     id: root
-    pluginId: "intervalCommandPlugin"
+    pluginId: "intervalCommand"
 
     StyledText {
         width: parent.width
