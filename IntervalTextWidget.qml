@@ -13,13 +13,19 @@ PluginComponent {
     property string iconName: pluginData.icon || "info"
     property int refreshInterval: (pluginData.refreshInterval || 10) * 1000
     property string clickCommand: pluginData.clickCommand || ""
+    property bool popoutEnabled: pluginData.popoutEnabled || false
+    property int popoutRefreshInterval: (pluginData.popoutRefreshInterval || 5) * 1000
 
     // State
     property string outputText: command === "" ? "Configure me" : "..."
+    property string popoutText: ""
 
-    // Click handler — run clickCommand silently if configured
+    // Click handler — popout or silent command
     pillClickAction: (x, y, width, section, screen) => {
-        if (clickCommand !== "") {
+        if (clickCommand === "") return;
+        if (popoutEnabled) {
+            popoutTimer.running = !popoutTimer.running;
+        } else {
             clickProcess.command = ["sh", "-c", root.clickCommand];
             clickProcess.running = true;
         }
@@ -56,6 +62,44 @@ PluginComponent {
     Process {
         id: clickProcess
         running: false
+    }
+
+    // Process to run the click command and capture full output for popout
+    Process {
+        id: popoutProcess
+        command: ["sh", "-c", root.clickCommand + "; echo"]
+        running: false
+
+        stdout: SplitParser {
+            property string buffer: ""
+            onRead: data => {
+                let line = data.trim();
+                if (line !== "") {
+                    buffer = buffer === "" ? line : buffer + "\n" + line;
+                }
+            }
+        }
+
+        onRunningChanged: {
+            if (!running) {
+                root.popoutText = popoutProcess.stdout.buffer || "No output";
+            }
+        }
+    }
+
+    // Timer for popout refresh — only runs while popout is open
+    Timer {
+        id: popoutTimer
+        interval: root.popoutRefreshInterval
+        running: false
+        repeat: true
+        triggeredOnStart: true
+        onTriggered: {
+            if (root.clickCommand !== "") {
+                popoutProcess.stdout.buffer = "";
+                popoutProcess.running = true;
+            }
+        }
     }
 
     // Timer to periodically execute the command
@@ -108,6 +152,31 @@ PluginComponent {
                 font.pixelSize: Theme.fontSizeSmall
                 color: Theme.surfaceText
                 anchors.horizontalCenter: parent.horizontalCenter
+            }
+        }
+    }
+
+    popoutWidth: 400
+    popoutHeight: 300
+
+    popoutContent: Component {
+        PopoutComponent {
+            id: popout
+            headerText: root.iconName
+            detailsText: root.clickCommand
+            showCloseButton: true
+
+            StyledText {
+                width: parent.width
+                text: root.popoutText || "Running..."
+                font.pixelSize: Theme.fontSizeSmall
+                font.family: "monospace"
+                color: Theme.surfaceText
+                wrapMode: Text.WordWrap
+            }
+
+            function closePopout() {
+                popoutTimer.running = false;
             }
         }
     }
