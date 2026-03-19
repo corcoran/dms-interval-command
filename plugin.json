@@ -1,0 +1,11 @@
+{
+  "id": "intervalTextPlugin",
+  "name": "Interval Text",
+  "description": "Display custom command output on an interval",
+  "version": "0.1.0",
+  "author": "corcoran",
+  "icon": "terminal",
+  "component": "./IntervalTextWidget.qml",
+  "settings": "./IntervalTextSettings.qml",
+  "permissions": ["settings_read", "settings_write"]
+}
