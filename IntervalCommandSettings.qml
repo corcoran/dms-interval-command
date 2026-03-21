@@ -23,6 +23,7 @@ PluginSettings {
         nameField.text = selectedVariant.name ?? "";
         commandField.text = selectedVariant.command ?? "";
         iconField.text = selectedVariant.icon ?? "info";
+        accentToggle.checked = selectedVariant.useAccentColor ?? false;
         clickCommandField.text = selectedVariant.clickCommand ?? "";
         refreshSlider.value = selectedVariant.refreshInterval ?? 10;
         popoutToggle.checked = selectedVariant.popoutEnabled ?? false;
@@ -390,6 +391,19 @@ PluginSettings {
                 placeholderText: "info"
                 onTextEdited: root.debounceSave("icon", text, iconField)
                 onEditingFinished: root.flushPendingSave()
+            }
+        }
+
+        // Accent Color Toggle
+        DankToggle {
+            id: accentToggle
+            width: parent.width
+            text: "Use Accent Color for Icon"
+            description: "Colors the widget icon with your theme's accent color"
+            checked: root.selectedVariant?.useAccentColor ?? false
+            onToggled: isChecked => {
+                checked = isChecked;
+                root.saveField("useAccentColor", isChecked);
             }
         }
 

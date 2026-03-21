@@ -20,6 +20,7 @@ PluginComponent {
     property string clickCommand: (variantData?.clickCommand ?? pluginData.clickCommand ?? "").replace(/[\r\n]+/g, " ").trim()
     property bool popoutEnabled: variantData?.popoutEnabled ?? pluginData.popoutEnabled ?? false
     property int popoutRefreshInterval: ((variantData?.popoutRefreshInterval ?? pluginData.popoutRefreshInterval ?? 5)) * 1000
+    property bool useAccentColor: variantData?.useAccentColor ?? pluginData.useAccentColor ?? false
 
     // State
     property string outputText: command === "" ? "No command set" : "..."
@@ -160,6 +161,7 @@ PluginComponent {
             DankIcon {
                 name: root.iconName
                 size: root.iconSize
+                color: root.useAccentColor ? Theme.primary : Theme.surfaceText
                 anchors.verticalCenter: parent.verticalCenter
             }
 
@@ -180,6 +182,7 @@ PluginComponent {
             DankIcon {
                 name: root.iconName
                 size: root.iconSize
+                color: root.useAccentColor ? Theme.primary : Theme.surfaceText
                 anchors.horizontalCenter: parent.horizontalCenter
             }
 

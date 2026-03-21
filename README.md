@@ -32,6 +32,7 @@ Click **Add Widget** to create a new widget. Each widget appears in the bar as a
 | **Command** | Shell command to run | *(empty)* |
 | **Icon** | Material Design icon name | `info` |
 | **Refresh Interval** | Seconds between runs (1–300) | `10` |
+| **Use Accent Color** | Colors the widget icon with your theme's accent color | `false` |
 | **Click Command** | Command to run when widget is clicked | *(empty)* |
 | **Popout Enabled** | Show click command output in a popout panel | `false` |
 | **Popout Refresh Interval** | Seconds between popout refreshes (1–300) | `5` |
