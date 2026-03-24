@@ -25,8 +25,6 @@ PluginSettings {
         _syncing = true;
         nameField.text = selectedVariant.name ?? "";
         commandField.text = selectedVariant.command ?? "";
-        // HACK: DankDropdown doesn't clear searchField.text on reopen (upstream bug)
-        // Recreating via Loader is the only way to reset internal state
         iconDropdownLoader.active = false;
         iconDropdownLoader.active = true;
         accentToggle.checked = selectedVariant.useAccentColor ?? false;
@@ -166,12 +164,14 @@ PluginSettings {
     StyledText {
         width: parent.width
         text: "Interval Command"
-        font.pixelSize: Theme.fontSizeLarge
+        font.pixelSize: Appearance.fontSize.large
         font.weight: Font.Bold
         color: Theme.surfaceText
     }
 
     // ── State 1: No widgets — show "Add Widget" button ──
+
+    Item { width: 1; height: Appearance.spacing.small; visible: root.variants.length === 0 }
 
     DankButton {
         visible: root.variants.length === 0
@@ -189,7 +189,6 @@ PluginSettings {
 
     // ── State 2: One or more widgets exist ──
 
-    // Widget list
     Column {
         id: widgetListSection
         visible: root.variants.length > 0
@@ -198,7 +197,7 @@ PluginSettings {
 
         StyledText {
             text: "Widgets"
-            font.pixelSize: Theme.fontSizeMedium
+            font.pixelSize: Appearance.fontSize.normal
             font.weight: Font.Medium
             color: Theme.surfaceText
         }
@@ -241,7 +240,7 @@ PluginSettings {
 
                         StyledText {
                             text: widgetRow.model.name || "Unnamed"
-                            font.pixelSize: Theme.fontSizeSmall
+                            font.pixelSize: Appearance.fontSize.small
                             color: Theme.surfaceText
                             anchors.verticalCenter: parent.verticalCenter
                             elide: Text.ElideRight
@@ -292,6 +291,8 @@ PluginSettings {
             }
         }
 
+        Item { width: 1; height: Appearance.spacing.small }
+
         DankButton {
             text: "Add Another Widget"
             iconName: "add"
@@ -314,22 +315,14 @@ PluginSettings {
         width: parent.width
         spacing: Theme.spacingM
 
-        StyledText {
-            text: (root.selectedVariant?.name || "Widget") + " Settings"
-            font.pixelSize: Theme.fontSizeMedium
-            font.weight: Font.Medium
-            color: Theme.surfaceText
-        }
-
-        // Name
         Column {
             width: parent.width
             spacing: Theme.spacingXS
 
             StyledText {
                 text: "Name"
-                font.pixelSize: Theme.fontSizeSmall
-                color: Theme.surfaceVariantText
+                font.pixelSize: Appearance.fontSize.normal
+                color: Theme.surfaceText
             }
 
             DankTextField {
@@ -342,20 +335,19 @@ PluginSettings {
             }
         }
 
-        // Command
         Column {
             width: parent.width
             spacing: Theme.spacingXS
 
             StyledText {
                 text: "Command"
-                font.pixelSize: Theme.fontSizeSmall
-                color: Theme.surfaceVariantText
+                font.pixelSize: Appearance.fontSize.normal
+                color: Theme.surfaceText
             }
 
             StyledText {
                 text: "Shell command to run (e.g. ~/.config/DankMaterialShell/plugins/intervalCommand/uptime-compact.sh)"
-                font.pixelSize: Theme.fontSizeXSmall
+                font.pixelSize: Appearance.fontSize.small
                 color: Theme.surfaceVariantText
                 wrapMode: Text.WordWrap
                 width: parent.width
@@ -371,14 +363,15 @@ PluginSettings {
             }
         }
 
-        // Icon — wrapped in Loader to work around DankDropdown not clearing
-        // search field text on reopen (upstream bug). Toggling active destroys
-        // and recreates the dropdown, resetting all internal state.
+        // Icon dropdown with fuzzy search.
+        // resetSearch() was added upstream to fix stale search text on reopen.
+        // Fall back to Loader destroy/recreate for older DMS versions without it.
         Loader {
             id: iconDropdownLoader
             width: parent.width
             active: true
             sourceComponent: DankDropdown {
+                id: iconDropdown
                 text: "Icon"
                 description: "Material Design icon name"
                 enableFuzzySearch: true
@@ -389,12 +382,16 @@ PluginSettings {
                 onValueChanged: value => {
                     if (root.selectedVariant) root.selectedVariant.icon = value;
                     root.saveField("icon", value);
-                    iconReloadTimer.restart();
+                    if (typeof iconDropdown.resetSearch === "function") {
+                        iconDropdown.resetSearch();
+                    } else {
+                        iconReloadTimer.restart();
+                    }
                 }
             }
         }
 
-        // HACK: Delayed recreate after icon selection (see Loader comment above)
+        // Fallback for DMS versions without DankDropdown.resetSearch()
         Timer {
             id: iconReloadTimer
             interval: 100
@@ -403,7 +400,6 @@ PluginSettings {
                 iconDropdownLoader.active = true;
             }
         }
-        // Accent Color Toggle
         DankToggle {
             id: accentToggle
             width: parent.width
@@ -416,20 +412,19 @@ PluginSettings {
             }
         }
 
-        // Refresh Interval
         Column {
             width: parent.width
             spacing: Theme.spacingXS
 
             StyledText {
                 text: "Refresh Interval"
-                font.pixelSize: Theme.fontSizeSmall
-                color: Theme.surfaceVariantText
+                font.pixelSize: Appearance.fontSize.normal
+                color: Theme.surfaceText
             }
 
             StyledText {
                 text: "How often to run the command (in seconds)"
-                font.pixelSize: Theme.fontSizeXSmall
+                font.pixelSize: Appearance.fontSize.small
                 color: Theme.surfaceVariantText
                 wrapMode: Text.WordWrap
                 width: parent.width
@@ -447,20 +442,19 @@ PluginSettings {
             }
         }
 
-        // Click Command
         Column {
             width: parent.width
             spacing: Theme.spacingXS
 
             StyledText {
                 text: "Click Command"
-                font.pixelSize: Theme.fontSizeSmall
-                color: Theme.surfaceVariantText
+                font.pixelSize: Appearance.fontSize.normal
+                color: Theme.surfaceText
             }
 
             StyledText {
                 text: "Command to run when the widget is clicked (leave empty for no action)"
-                font.pixelSize: Theme.fontSizeXSmall
+                font.pixelSize: Appearance.fontSize.small
                 color: Theme.surfaceVariantText
                 wrapMode: Text.WordWrap
                 width: parent.width
@@ -476,7 +470,6 @@ PluginSettings {
             }
         }
 
-        // Popout Toggle
         DankToggle {
             id: popoutToggle
             width: parent.width
@@ -489,7 +482,6 @@ PluginSettings {
             }
         }
 
-        // Popout Refresh Interval
         Column {
             visible: popoutToggle.checked
             width: parent.width
@@ -497,13 +489,13 @@ PluginSettings {
 
             StyledText {
                 text: "Popout Refresh Interval"
-                font.pixelSize: Theme.fontSizeSmall
-                color: Theme.surfaceVariantText
+                font.pixelSize: Appearance.fontSize.normal
+                color: Theme.surfaceText
             }
 
             StyledText {
                 text: "How often to refresh the click command output in the popout (in seconds)"
-                font.pixelSize: Theme.fontSizeXSmall
+                font.pixelSize: Appearance.fontSize.small
                 color: Theme.surfaceVariantText
                 wrapMode: Text.WordWrap
                 width: parent.width
@@ -521,7 +513,6 @@ PluginSettings {
             }
         }
 
-        // Popout Width
         Column {
             visible: popoutToggle.checked
             width: parent.width
@@ -529,8 +520,8 @@ PluginSettings {
 
             StyledText {
                 text: "Popout Width"
-                font.pixelSize: Theme.fontSizeSmall
-                color: Theme.surfaceVariantText
+                font.pixelSize: Appearance.fontSize.normal
+                color: Theme.surfaceText
             }
 
             DankSlider {
@@ -545,7 +536,6 @@ PluginSettings {
             }
         }
 
-        // Popout Max Height
         Column {
             visible: popoutToggle.checked
             width: parent.width
@@ -553,8 +543,8 @@ PluginSettings {
 
             StyledText {
                 text: "Popout Max Height"
-                font.pixelSize: Theme.fontSizeSmall
-                color: Theme.surfaceVariantText
+                font.pixelSize: Appearance.fontSize.normal
+                color: Theme.surfaceText
             }
 
             DankSlider {

@@ -2,11 +2,16 @@
   "id": "intervalCommand",
   "name": "Interval Command",
   "description": "Run a command on a custom interval and display its output in the bar. Supports multiple instances with different commands.",
-  "version": "0.9.2",
+  "version": "0.9.3",
   "author": "corcoran",
   "icon": "terminal",
   "component": "./IntervalCommandWidget.qml",
   "settings": "./IntervalCommandSettings.qml",
-  "capabilities": ["variants"],
-  "permissions": ["settings_read", "settings_write"]
+  "capabilities": [
+    "variants"
+  ],
+  "permissions": [
+    "settings_read",
+    "settings_write"
+  ]
 }
