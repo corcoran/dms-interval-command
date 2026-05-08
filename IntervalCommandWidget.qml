@@ -21,6 +21,7 @@ PluginComponent {
     property bool popoutEnabled: variantData?.popoutEnabled ?? pluginData.popoutEnabled ?? false
     property int popoutRefreshInterval: ((variantData?.popoutRefreshInterval ?? pluginData.popoutRefreshInterval ?? 5)) * 1000
     property bool useAccentColor: variantData?.useAccentColor ?? pluginData.useAccentColor ?? false
+    property bool useTabularNumbers: variantData?.tabularNumbers ?? pluginData.tabularNumbers ?? true
 
     // State
     property string outputText: command === "" ? "No command set" : "..."
@@ -168,6 +169,7 @@ PluginComponent {
             StyledText {
                 text: root.outputText
                 font.pixelSize: Theme.fontSizeSmall
+                font.features: root.useTabularNumbers ? ({ "tnum": 1 }) : ({})
                 color: Theme.surfaceText
                 anchors.verticalCenter: parent.verticalCenter
             }
@@ -189,6 +191,7 @@ PluginComponent {
             StyledText {
                 text: root.outputText
                 font.pixelSize: Theme.fontSizeSmall
+                font.features: root.useTabularNumbers ? ({ "tnum": 1 }) : ({})
                 color: Theme.surfaceText
                 anchors.horizontalCenter: parent.horizontalCenter
             }
