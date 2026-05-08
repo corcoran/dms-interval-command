@@ -33,6 +33,7 @@ Click **Add Widget** to create a new widget. Each widget appears in the bar as a
 | **Icon** | Material Design icon name (fuzzy-searchable dropdown) | `info` |
 | **Refresh Interval** | Seconds between runs (1–300) | `10` |
 | **Use Accent Color** | Colors the widget icon with your theme's accent color | `false` |
+| **Use Tabular Numbers** | Use tabular digits (OpenType 'tnum') for numeric output | `true` |
 | **Click Command** | Command to run when widget is clicked | *(empty)* |
 | **Popout Enabled** | Show click command output in a popout panel | `false` |
 | **Popout Refresh Interval** | Seconds between popout refreshes (1–300) | `5` |

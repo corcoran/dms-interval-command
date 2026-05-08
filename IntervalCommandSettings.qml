@@ -34,6 +34,7 @@ PluginSettings {
         popoutRefreshSlider.value = selectedVariant.popoutRefreshInterval ?? 5;
         popoutWidthSlider.value = selectedVariant.popoutWidth ?? 600;
         popoutHeightSlider.value = selectedVariant.popoutHeight ?? 450;
+        tabularToggle.checked = selectedVariant.tabularNumbers ?? true;
         _syncing = false;
     }
 
@@ -73,7 +74,8 @@ PluginSettings {
             popoutEnabled: loadValue("popoutEnabled", false),
             popoutRefreshInterval: loadValue("popoutRefreshInterval", 5),
             popoutWidth: loadValue("popoutWidth", 600),
-            popoutHeight: loadValue("popoutHeight", 450)
+            popoutHeight: loadValue("popoutHeight", 450),
+            tabularNumbers: loadValue("tabularNumbers", true)
         };
 
         let variantId = createVariant("Widget", config);
@@ -409,6 +411,18 @@ PluginSettings {
             onToggled: isChecked => {
                 checked = isChecked;
                 root.saveField("useAccentColor", isChecked);
+            }
+        }
+
+        DankToggle {
+            id: tabularToggle
+            width: parent.width
+            text: "Use Tabular Numbers"
+            description: "Use tabular digits (OpenType 'tnum') for numeric output"
+            checked: root.selectedVariant?.tabularNumbers ?? true
+            onToggled: isChecked => {
+                checked = isChecked;
+                root.saveField("tabularNumbers", isChecked);
             }
         }
 
