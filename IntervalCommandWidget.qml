@@ -168,7 +168,7 @@ PluginComponent {
 
             StyledText {
                 text: root.outputText
-                font.pixelSize: Theme.fontSizeSmall
+                font.pixelSize: Theme.barTextSize(root.barThickness, root.barConfig?.fontScale, root.barConfig?.maximizeWidgetText)
                 font.features: root.useTabularNumbers ? ({ "tnum": 1 }) : ({})
                 color: Theme.surfaceText
                 anchors.verticalCenter: parent.verticalCenter
@@ -190,7 +190,7 @@ PluginComponent {
 
             StyledText {
                 text: root.outputText
-                font.pixelSize: Theme.fontSizeSmall
+                font.pixelSize: Theme.barTextSize(root.barThickness, root.barConfig?.fontScale, root.barConfig?.maximizeWidgetText)
                 font.features: root.useTabularNumbers ? ({ "tnum": 1 }) : ({})
                 color: Theme.surfaceText
                 anchors.horizontalCenter: parent.horizontalCenter
