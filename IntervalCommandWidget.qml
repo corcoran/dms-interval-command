@@ -223,12 +223,12 @@ PluginComponent {
                 flickableDirection: Flickable.VerticalFlick
                 boundsBehavior: Flickable.StopAtBounds
 
-                Text {
+                StyledText {
                     id: popoutTextItem
                     width: popoutFlickable.width
                     text: root.popoutText || "Running..."
                     font.pixelSize: Theme.fontSizeSmall
-                    font.family: "monospace"
+                    isMonospace: true
                     color: Theme.surfaceText
                     wrapMode: Text.WordWrap
                 }
