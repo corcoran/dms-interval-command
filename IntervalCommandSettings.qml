@@ -181,7 +181,7 @@ PluginSettings {
         iconName: "add"
         buttonHeight: 28
         horizontalPadding: Theme.spacingS
-        iconSize: 16
+        iconSize: Theme.iconSizeSmall
         onClicked: {
             createVariant(root.nextWidgetName(), {});
             loadVariants();
@@ -234,6 +234,7 @@ PluginSettings {
                         spacing: Theme.spacingM
 
                         DankIcon {
+                            id: rowIcon
                             name: widgetRow.model.icon || "info"
                             size: Theme.iconSizeSmall
                             color: Theme.surfaceText
@@ -246,34 +247,18 @@ PluginSettings {
                             color: Theme.surfaceText
                             anchors.verticalCenter: parent.verticalCenter
                             elide: Text.ElideRight
-                            width: rowContent.width - rowContent.spacing * 2
-                                - deleteBtn.width - Theme.iconSizeSmall
+                            width: Math.max(0, rowContent.width - rowIcon.width
+                                - deleteBtn.width - rowContent.spacing * 2)
                         }
 
-                        Rectangle {
+                        DankActionButton {
                             id: deleteBtn
-                            width: 28
-                            height: 28
-                            radius: 14
-                            color: deleteArea.containsMouse ? Theme.errorHover : "transparent"
+                            iconName: "delete"
+                            iconColor: Theme.error
+                            Accessible.name: "Remove widget"
                             anchors.verticalCenter: parent.verticalCenter
-
-                            DankIcon {
-                                anchors.centerIn: parent
-                                name: "delete"
-                                size: 16
-                                color: deleteArea.containsMouse
-                                    ? Theme.error : Theme.surfaceVariantText
-                            }
-
-                            MouseArea {
-                                id: deleteArea
-                                anchors.fill: parent
-                                hoverEnabled: true
-                                cursorShape: Qt.PointingHandCursor
-                                onClicked: {
-                                    removeVariant(widgetRow.model.id);
-                                }
+                            onClicked: {
+                                removeVariant(widgetRow.model.id);
                             }
                         }
                     }
@@ -300,7 +285,7 @@ PluginSettings {
             iconName: "add"
             buttonHeight: 28
             horizontalPadding: Theme.spacingS
-            iconSize: 16
+            iconSize: Theme.iconSizeSmall
             onClicked: {
                 createVariant(root.nextWidgetName(), {});
                 loadVariants();
