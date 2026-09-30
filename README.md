@@ -11,7 +11,7 @@ Run any shell command and show the result in your bar with a [Material Design ic
 git clone https://github.com/corcoran/dms-interval-command ~/.config/DankMaterialShell/plugins/intervalCommand
 
 # Reload
-dms ipc call plugins reload intervalCommandPlugin
+dms ipc call plugins reload intervalCommand
 ```
 
 Or symlink during development:

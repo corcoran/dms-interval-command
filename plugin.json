@@ -2,12 +2,14 @@
   "id": "intervalCommand",
   "name": "Interval Command",
   "description": "Run a command on a custom interval and display its output in the bar. Supports multiple instances with different commands.",
-  "version": "0.10.0",
+  "version": "0.10.1",
   "author": "corcoran",
+  "type": "widget",
   "icon": "terminal",
   "component": "./IntervalCommandWidget.qml",
   "settings": "./IntervalCommandSettings.qml",
   "capabilities": [
+    "dankbar-widget",
     "variants"
   ],
   "permissions": [
